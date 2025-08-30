@@ -1,0 +1,283 @@
+{
+  "name": "Job Hunt",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://jsearch.p.rapidapi.com/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "Full-Stack Web Developer in Hyderabad, India"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "num_pages",
+              "value": "1"
+            },
+            {
+              "name": "country",
+              "value": "in"
+            },
+            {
+              "name": "date_posted",
+              "value": "today"
+            },
+            {
+              "name": "employment_types",
+              "value": "FULLTIME, PARTTIME, INTERN"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-host",
+              "value": "jsearch.p.rapidapi.com"
+            },
+            {
+              "name": "x-rapidapi-key",
+              "value": "c7caf71f8fmsh00654fd8e273be7p1d84c6jsn6fd7fd60a6dd"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        -16
+      ],
+      "id": "4ef83dea-85c1-4ed4-a931-b3ad007cd02e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -16
+      ],
+      "id": "4dc22720-8cb8-4630-b596-78d19da1ca14",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "job_title, employer_name, employer_website, job_publisher, job_employment_type, job_apply_link",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        -16
+      ],
+      "id": "609929e9-6693-45f3-a311-b12e7ecfb5bf",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1O0ZhK3O1gn9eu0cbr5Q374SBQzm3FsDpklF4LYgkULk",
+          "mode": "list",
+          "cachedResultName": "Job Hunt",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0ZhK3O1gn9eu0cbr5Q374SBQzm3FsDpklF4LYgkULk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0ZhK3O1gn9eu0cbr5Q374SBQzm3FsDpklF4LYgkULk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Employer Name": "={{ $json.employer_name }}",
+            "Job Publisher": "={{ $json.job_publisher }}",
+            "Employer Website": "={{ $json.employer_website }}",
+            "Job Employment Type": "={{ $json.job_employment_type }}",
+            "Job Apply Link": "={{ $json.job_apply_link }}",
+            "Job Title": "={{ $json.job_title }}"
+          },
+          "matchingColumns": [
+            "Job Title"
+          ],
+          "schema": [
+            {
+              "id": "Job Title",
+              "displayName": "Job Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Employer Name",
+              "displayName": "Employer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Employer Website",
+              "displayName": "Employer Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job Publisher",
+              "displayName": "Job Publisher",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job Employment Type",
+              "displayName": "Job Employment Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job Apply Link",
+              "displayName": "Job Apply Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1376,
+        -16
+      ],
+      "id": "d9008e84-e9ba-443c-ad2b-41c44bc4488b",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xVPaV2P4h3SHvr80",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 17,
+              "triggerAtMinute": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        -16
+      ],
+      "id": "e826e34c-848b-4251-8926-748e47d3e0b1",
+      "name": "Schedule Trigger",
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ae8325e7-3df5-4bdd-99d7-b76a60761b3e",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "df71ff93a008c9f872ebfd2eb4ba67dccb301d6935ebbca7bac95c75829a91eb"
+  },
+  "id": "5AlYm3cfWZUzHQhb",
+  "tags": []
+}
